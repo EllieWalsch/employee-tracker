@@ -1,3 +1,5 @@
+import mysql from "mysql2/promise";
 import config from "./config.js";
 
-console.log(config);
+// Creates connection to the database using the imported config
+const conn = await mysql.createConnection(config.db);

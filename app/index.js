@@ -11,7 +11,7 @@ const mainQuestions = [
     type: "list",
     name: "options",
     message: "What would you like to do?",
-    choices: ["View all departments", "View all roles"],
+    choices: ["View all departments", "View all roles", "View all employees"],
   },
 ];
 
@@ -21,6 +21,8 @@ if (data.options === "View all departments") {
   viewDepartments();
 } else if (data.options === "View all roles") {
   viewRoles();
+} else if (data.options === "View all employees") {
+  viewEmployees();
 }
 
 async function viewDepartments() {
@@ -34,5 +36,15 @@ async function viewRoles() {
   );
   console.table(roles);
 }
+
+async function viewEmployees() {
+  const [employees] = await conn.execute(
+    "SELECT * from employee JOIN role on employee.role_id = role.id JOIN department ON role.department_id = department.id"
+  );
+  console.table(employees);
+}
+
+// TODO: remove unnecessary IDs from viewRoles() and viewEmployees() tables
+// TODO: show manager name instead of ID in viewEmployees()
 
 conn.end();

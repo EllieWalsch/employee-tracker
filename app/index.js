@@ -11,7 +11,12 @@ const mainQuestions = [
     type: "list",
     name: "options",
     message: "What would you like to do?",
-    choices: ["View all departments", "View all roles", "View all employees"],
+    choices: [
+      "View all departments",
+      "View all roles",
+      "View all employees",
+      "Add a department",
+    ],
   },
 ];
 
@@ -23,6 +28,8 @@ if (data.options === "View all departments") {
   viewRoles();
 } else if (data.options === "View all employees") {
   viewEmployees();
+} else if (data.options === "Add a department") {
+  addDepartment();
 }
 
 async function viewDepartments() {
@@ -46,5 +53,16 @@ async function viewEmployees() {
 
 // TODO: remove unnecessary IDs from viewRoles() and viewEmployees() tables
 // TODO: show manager name instead of ID in viewEmployees()
+
+async function addDepartment() {
+  const data = await inquirer.prompt([
+    {
+      type: "input",
+      name: "newDepartment",
+      message: "What is the department name?",
+    },
+  ]);
+  console.log(data.newDepartment);
+}
 
 conn.end();

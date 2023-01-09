@@ -16,6 +16,7 @@ const mainQuestions = [
       "View all roles",
       "View all employees",
       "Add a department",
+      "Add a role",
     ],
   },
 ];
@@ -30,6 +31,8 @@ if (data.options === "View all departments") {
   viewEmployees();
 } else if (data.options === "Add a department") {
   addDepartment();
+} else if (data.options === "Add a role") {
+  addRole();
 }
 
 async function viewDepartments() {
@@ -63,6 +66,27 @@ async function addDepartment() {
     },
   ]);
   console.log(data.newDepartment);
+}
+
+async function addRole() {
+  const data = await inquirer.prompt([
+    {
+      type: "input",
+      name: "roleName",
+      message: "What is the role name?",
+    },
+    {
+      type: "input",
+      name: "roleSalary",
+      message: "What is the salary?",
+    },
+    {
+      type: "input",
+      name: "roleDepartment",
+      message: "What is the department?",
+    },
+  ]);
+  console.log(data.roleName, data.roleSalary, data.roleDepartment);
 }
 
 conn.end();

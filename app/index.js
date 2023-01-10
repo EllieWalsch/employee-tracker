@@ -67,7 +67,10 @@ async function addDepartment() {
       message: "What is the department name?",
     },
   ]);
-  console.log(data.newDepartment);
+  conn.execute(
+    `INSERT INTO department (department.name) VALUES ("${data.newDepartment}")`
+  );
+  viewDepartments();
 }
 
 async function addRole() {
@@ -126,4 +129,6 @@ async function addEmployee() {
 // INSERT INTO table_name (column1, column2, column3, ...)
 // VALUES (value1, value2, value3, ...);
 
-conn.end();
+// conn.end();
+
+// TODO: go back to main questions after prompts

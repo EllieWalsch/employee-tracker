@@ -74,6 +74,12 @@ async function addDepartment() {
 }
 
 async function addRole() {
+  const [departmentList] = await conn.execute("SELECT * FROM department");
+  const departmentChoices = departmentList.map((department) => ({
+    name: department.name,
+    value: department.id,
+  }));
+
   const data = await inquirer.prompt([
     {
       type: "input",
@@ -86,12 +92,16 @@ async function addRole() {
       message: "What is the salary?",
     },
     {
-      type: "input",
+      type: "list",
       name: "roleDepartment",
-      message: "What is the department?",
+      message: "Which department does the role belong to?",
+      choices: departmentChoices,
     },
   ]);
-  console.log(data.roleName, data.roleSalary, data.roleDepartment);
+  conn.execute(
+    `INSERT INTO role (role.title, role.salary, role.department_id) VALUES ("${data.roleName}", "${data.roleSalary}", "${data.roleDepartment}")`
+  );
+  viewRoles();
 }
 
 async function addEmployee() {
@@ -126,8 +136,6 @@ async function addEmployee() {
 }
 
 // TODO: add all new input to tables
-// INSERT INTO table_name (column1, column2, column3, ...)
-// VALUES (value1, value2, value3, ...);
 
 // conn.end();
 

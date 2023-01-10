@@ -105,6 +105,24 @@ async function addRole() {
 }
 
 async function addEmployee() {
+  const [roleList] = await conn.execute("SELECT role.title, role.id FROM role");
+  const roleChoices = roleList.map((role) => ({
+    name: role.title,
+    value: role.id,
+  }));
+
+  const [managerList] = await conn.execute(
+    "SELECT employee.manager_id, employee.first_name, employee.id FROM employee WHERE employee.manager_id IS NULL"
+  );
+  const managerChoices = managerList.map((employee) => ({
+    name: employee.first_name,
+    value: employee.id,
+  }));
+
+  // managers have manager_id as NULL - how do I get a list of all the employees with NULL as their manager_id?
+
+  // once the manager question is answered, take the manager's employee id and use that for the employee.manager_id
+
   const data = await inquirer.prompt([
     {
       type: "input",
@@ -117,22 +135,22 @@ async function addEmployee() {
       message: "What is the employee's last name?",
     },
     {
-      type: "input",
+      type: "list",
       name: "employeeRole",
       message: "What is the employee's role?",
+      choices: roleChoices,
     },
     {
-      type: "input",
+      type: "list",
       name: "employeeManager",
       message: "Who is the employee's manager?",
+      choices: managerChoices,
     },
   ]);
-  console.log(
-    data.firstName,
-    data.lastName,
-    data.employeeRole,
-    data.employeeManager
+  conn.execute(
+    `INSERT INTO employee (employee.first_name, employee.last_name, employee.role_id, employee.manager_id) VALUES ("${data.firstName}", "${data.lastName}", "${data.employeeRole}", "${data.employeeManager}")`
   );
+  viewEmployees();
 }
 
 // TODO: add all new input to tables

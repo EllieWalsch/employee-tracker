@@ -45,7 +45,7 @@ async function viewDepartments() {
 
 async function viewRoles() {
   const [roles] = await conn.execute(
-    "SELECT * FROM role JOIN department ON role.department_id = department.id"
+    "SELECT role.id, role.title, role.salary, department.name FROM role JOIN department ON role.department_id = department.id"
   );
   console.table(roles);
 }
@@ -57,7 +57,7 @@ async function viewEmployees() {
   console.table(employees);
 }
 
-// TODO: remove unnecessary IDs from viewRoles() and viewEmployees() tables
+// TODO: remove unnecessary IDs from viewEmployees() table
 // TODO: show manager name instead of ID in viewEmployees()
 
 async function addDepartment() {
@@ -122,5 +122,9 @@ async function addEmployee() {
     data.employeeManager
   );
 }
+
+// TODO: add all new input to tables
+// INSERT INTO table_name (column1, column2, column3, ...)
+// VALUES (value1, value2, value3, ...);
 
 conn.end();

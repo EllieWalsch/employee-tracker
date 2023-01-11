@@ -188,6 +188,4 @@ async function updateEmployeeRole() {
   viewEmployees();
 }
 
-// conn.end();
-
 // TODO: go back to main questions after prompts

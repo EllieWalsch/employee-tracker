@@ -19,6 +19,7 @@ const mainQuestions = [
       "Add a role",
       "Add an employee",
       "Update employee role",
+      "Exit",
     ],
   },
 ];
@@ -39,6 +40,8 @@ if (data.options === "View all departments") {
   addEmployee();
 } else if (data.options === "Update employee role") {
   updateEmployeeRole();
+} else if (data.options === "Exit") {
+  conn.end();
 }
 
 async function viewDepartments() {

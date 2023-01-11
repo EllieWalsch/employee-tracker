@@ -132,10 +132,10 @@ async function addEmployee() {
   }));
 
   const [managerList] = await conn.execute(
-    "SELECT employee.manager_id, employee.first_name, employee.id FROM employee WHERE employee.manager_id IS NULL"
+    "SELECT employee.manager_id, CONCAT(employee.first_name, ' ', employee.last_name) AS name, employee.id FROM employee WHERE employee.manager_id IS NULL"
   );
   const managerChoices = managerList.map((employee) => ({
-    name: employee.first_name,
+    name: employee.name,
     value: employee.id,
   }));
 

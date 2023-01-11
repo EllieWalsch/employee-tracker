@@ -52,12 +52,10 @@ async function viewRoles() {
 
 async function viewEmployees() {
   const [employees] = await conn.execute(
-    "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee JOIN role on employee.role_id = role.id JOIN department ON role.department_id = department.id"
+    "SELECT employee.id, employee.first_name, employee.last_name, CONCAT(manager.first_name, ' ', manager.last_name) AS manager, role.title, role.salary, department.name FROM employee JOIN role on employee.role_id = role.id JOIN department ON role.department_id = department.id JOIN employee manager ON manager.id = employee.manager_id"
   );
   console.table(employees);
 }
-
-// TODO: show manager name instead of ID in viewEmployees()
 
 async function addDepartment() {
   const data = await inquirer.prompt([
@@ -119,10 +117,6 @@ async function addEmployee() {
     value: employee.id,
   }));
 
-  // managers have manager_id as NULL - how do I get a list of all the employees with NULL as their manager_id?
-
-  // once the manager question is answered, take the manager's employee id and use that for the employee.manager_id
-
   const data = await inquirer.prompt([
     {
       type: "input",
@@ -152,8 +146,6 @@ async function addEmployee() {
   );
   viewEmployees();
 }
-
-// TODO: add all new input to tables
 
 // conn.end();
 

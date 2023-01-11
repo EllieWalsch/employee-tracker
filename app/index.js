@@ -18,6 +18,7 @@ const mainQuestions = [
       "Add a department",
       "Add a role",
       "Add an employee",
+      "Update employee role",
     ],
   },
 ];
@@ -36,6 +37,8 @@ if (data.options === "View all departments") {
   addRole();
 } else if (data.options === "Add an employee") {
   addEmployee();
+} else if (data.options === "Update employee role") {
+  updateEmployeeRole();
 }
 
 async function viewDepartments() {
@@ -143,6 +146,41 @@ async function addEmployee() {
   ]);
   conn.execute(
     `INSERT INTO employee (employee.first_name, employee.last_name, employee.role_id, employee.manager_id) VALUES ("${data.firstName}", "${data.lastName}", "${data.employeeRole}", "${data.employeeManager}")`
+  );
+  viewEmployees();
+}
+
+async function updateEmployeeRole() {
+  const [employeeList] = await conn.execute(
+    "SELECT employee.id, CONCAT(employee.first_name, ' ', employee.last_name) AS name FROM employee"
+  );
+  const employeeChoices = employeeList.map((employee) => ({
+    name: employee.name,
+    value: employee.id,
+  }));
+
+  const [roleList] = await conn.execute("SELECT role.title, role.id FROM role");
+  const roleChoices = roleList.map((role) => ({
+    name: role.title,
+    value: role.id,
+  }));
+
+  const data = await inquirer.prompt([
+    {
+      type: "list",
+      name: "whichEmployee",
+      message: "Which employee would you like to update?",
+      choices: employeeChoices,
+    },
+    {
+      type: "list",
+      name: "employeeRole",
+      message: "What is the employee's new role?",
+      choices: roleChoices,
+    },
+  ]);
+  conn.execute(
+    `UPDATE employee SET employee.role_id = ${data.employeeRole} WHERE id = ${data.whichEmployee}`
   );
   viewEmployees();
 }

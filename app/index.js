@@ -3,7 +3,7 @@ import config from "./config.js";
 import cTable from "console.table";
 import inquirer from "inquirer";
 
-// Creates connection to the database using the imported config
+// Create connection to the database using the imported config
 const conn = await mysql.createConnection(config.db);
 
 const mainQuestions = [
@@ -24,6 +24,7 @@ const mainQuestions = [
   },
 ];
 
+// Begin main menu questions
 initMenu();
 
 async function initMenu() {
@@ -48,12 +49,14 @@ async function initMenu() {
   }
 }
 
+// VIEW everything from the department table
 async function viewDepartments() {
   const [departments] = await conn.execute("SELECT * FROM department");
   console.table(departments);
   initMenu();
 }
 
+// VIEW role info and join the department name to the role table
 async function viewRoles() {
   const [roles] = await conn.execute(
     "SELECT role.id, role.title, role.salary, department.name FROM role JOIN department ON role.department_id = department.id"
@@ -62,6 +65,8 @@ async function viewRoles() {
   initMenu();
 }
 
+// VIEW employee info including title and salary from role table,
+// plus department name from department table
 async function viewEmployees() {
   const [employees] = await conn.execute(
     "SELECT employee.id, employee.first_name, employee.last_name, CONCAT(manager.first_name, ' ', manager.last_name) AS manager, role.title, role.salary, department.name FROM employee JOIN role on employee.role_id = role.id JOIN department ON role.department_id = department.id JOIN employee manager ON manager.id = employee.manager_id"
@@ -70,6 +75,7 @@ async function viewEmployees() {
   initMenu();
 }
 
+// ADD a new department
 async function addDepartment() {
   const data = await inquirer.prompt([
     {
@@ -84,6 +90,7 @@ async function addDepartment() {
   viewDepartments();
 }
 
+// ADD a new role
 async function addRole() {
   const [departmentList] = await conn.execute("SELECT * FROM department");
   const departmentChoices = departmentList.map((department) => ({
@@ -106,6 +113,7 @@ async function addRole() {
       type: "list",
       name: "roleDepartment",
       message: "Which department does the role belong to?",
+      // choices are updated based on any departments the user has added
       choices: departmentChoices,
     },
   ]);
@@ -115,6 +123,7 @@ async function addRole() {
   viewRoles();
 }
 
+// ADD a new employee
 async function addEmployee() {
   const [roleList] = await conn.execute("SELECT role.title, role.id FROM role");
   const roleChoices = roleList.map((role) => ({
@@ -160,6 +169,7 @@ async function addEmployee() {
   viewEmployees();
 }
 
+// UPDATE employee role
 async function updateEmployeeRole() {
   const [employeeList] = await conn.execute(
     "SELECT employee.id, CONCAT(employee.first_name, ' ', employee.last_name) AS name FROM employee"

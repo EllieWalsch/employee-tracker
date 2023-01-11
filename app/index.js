@@ -24,29 +24,34 @@ const mainQuestions = [
   },
 ];
 
-const data = await inquirer.prompt(mainQuestions);
+initMenu();
 
-if (data.options === "View all departments") {
-  viewDepartments();
-} else if (data.options === "View all roles") {
-  viewRoles();
-} else if (data.options === "View all employees") {
-  viewEmployees();
-} else if (data.options === "Add a department") {
-  addDepartment();
-} else if (data.options === "Add a role") {
-  addRole();
-} else if (data.options === "Add an employee") {
-  addEmployee();
-} else if (data.options === "Update employee role") {
-  updateEmployeeRole();
-} else if (data.options === "Exit") {
-  conn.end();
+async function initMenu() {
+  const data = await inquirer.prompt(mainQuestions);
+
+  if (data.options === "View all departments") {
+    viewDepartments();
+  } else if (data.options === "View all roles") {
+    viewRoles();
+  } else if (data.options === "View all employees") {
+    viewEmployees();
+  } else if (data.options === "Add a department") {
+    addDepartment();
+  } else if (data.options === "Add a role") {
+    addRole();
+  } else if (data.options === "Add an employee") {
+    addEmployee();
+  } else if (data.options === "Update employee role") {
+    updateEmployeeRole();
+  } else if (data.options === "Exit") {
+    conn.end();
+  }
 }
 
 async function viewDepartments() {
   const [departments] = await conn.execute("SELECT * FROM department");
   console.table(departments);
+  initMenu();
 }
 
 async function viewRoles() {
@@ -54,6 +59,7 @@ async function viewRoles() {
     "SELECT role.id, role.title, role.salary, department.name FROM role JOIN department ON role.department_id = department.id"
   );
   console.table(roles);
+  initMenu();
 }
 
 async function viewEmployees() {
@@ -61,6 +67,7 @@ async function viewEmployees() {
     "SELECT employee.id, employee.first_name, employee.last_name, CONCAT(manager.first_name, ' ', manager.last_name) AS manager, role.title, role.salary, department.name FROM employee JOIN role on employee.role_id = role.id JOIN department ON role.department_id = department.id JOIN employee manager ON manager.id = employee.manager_id"
   );
   console.table(employees);
+  initMenu();
 }
 
 async function addDepartment() {
@@ -187,5 +194,3 @@ async function updateEmployeeRole() {
   );
   viewEmployees();
 }
-
-// TODO: go back to main questions after prompts

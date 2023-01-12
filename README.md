@@ -1,28 +1,20 @@
-# Node Starter
+# Employee Tracker
 
-~~**Update:** A `pnpm-lock.yaml` file was added to the root of the project. If possible use `pnpm` over `npm`. You might like it better. See [the docs 📝](https://pnpm.io/motivation) if interested. If not, delete this file.~~
+## Description
 
-## TLDR
+This application allows users to easily view and interact with an employee database using Node.js, Inquirer, and MySQL.
 
-Use of this starter template assumes that you have a 'complete dev environment' setup - a terminal, Node, VS Code, at least. If not, you may want to [start here.](https://www.notion.so/codefinity/Setting-up-a-Local-Dev-Environment-for-JS-02a4e9f4a30043d3a8e7d109be3448f4)
+## Installation
 
-1. Click that big green button to start using it.
-2. `clone` your new repo from your GitHub to your local computer
-3. `cd` into the `clone`d repo and enter: `npm i`.
-4. `npm start`
+First, download the repo. Then open the terminal and make sure you're in the "employee-tracker" directory. Type "npm i" to install all packages. You're now ready to run the app!
 
-## Some of What's Included
+## Usage
 
-- [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-- Various VS Code 'settings' and 'extensions.' Look in the bottom right when you open this up in VS Code to install them.
-- [Vitest](https://vitest.dev/) for testing. Just do `npm test` or `npm t`.
+In the terminal, type "node app/index.js" and answer the following prompts to add, view, or update the team. [Click here for a walkthrough video.](https://drive.google.com/file/d/1m6WNdcF7so_H1idjYpE6-bJ2tvpw5Qbt/view)
 
-## How To Use
+![Employee Tracker](/images/employee-tracker.png)
 
-Run `npm i` to get all the things installed.
+## Credits
 
-`npm start` will watch the `app` directory for any changes using `nodemon`
-
-## Other Notes
-
-To use the new experimental `fetch` that's now in Node, just add: `/* global fetch */` to the top of your file. This will appease ESLint.
+- [Inquirer](https://www.npmjs.com/package/inquirer/v/8.2.4)
+- [MySQL](https://dev.mysql.com/)
